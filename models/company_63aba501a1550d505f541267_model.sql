@@ -6,7 +6,7 @@
 }}
 
     
-select _id, company_id, invoice_id, total_units, status
+select _id, company_id, invoice_id, total_units, status, updated_at
 from {{ref("customer_segregation_model")}}
 where company_id = "63aba501a1550d505f541267"
 {% if is_incremental() %}
