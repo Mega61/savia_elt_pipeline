@@ -1,6 +1,6 @@
 version: 2
 
 sources:
-  - name: savia_processed_data 
+  - name: mongo_savia_core_qa
     tables:
-      - name: customers_compression
+      - name: order
