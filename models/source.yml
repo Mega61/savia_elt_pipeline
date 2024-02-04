@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: savia_processed_data 
+    tables:
+      - name: customers_compression
