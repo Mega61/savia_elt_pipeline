@@ -4,3 +4,4 @@ sources:
   - name: mongo_savia_core_qa
     tables:
       - name: order
+      - name: order_item
