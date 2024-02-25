@@ -5,3 +5,4 @@ sources:
     tables:
       - name: order
       - name: order_item
+      - name: product
