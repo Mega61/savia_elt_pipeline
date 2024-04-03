@@ -62,5 +62,5 @@ products p ON oi.product_id = p._id
 where
 o.company_id = "629ec6e7541abf7b407b0ade"
 {% if is_incremental() %}
-    AND oi.updated_at_col > (select max(updated_at) from {{ this }})
+    AND oi.updated_at_col > (select max(updated_at_col) from {{ this }})
 {% endif %}
