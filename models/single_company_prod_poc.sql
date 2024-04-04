@@ -20,6 +20,7 @@ order_items as (
         (price_before_tax * quantity) * (discount/100) as net_discount,
         TIMESTAMP_SUB(updated_at, INTERVAL 5 HOUR) AS updated_at_col
     from {{source('mongo_savia_core_qa', 'order_item')}}
+    where active = true
 ),
 
 products as (
