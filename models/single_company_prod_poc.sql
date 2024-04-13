@@ -30,9 +30,9 @@ products as (
 
 select
     oi._id AS order_item_id,
-    REPLACE(JSON_EXTRACT(o.customer, '$.fullName'), '"','') AS customer_full_name,
-    REPLACE(JSON_EXTRACT(o.customer, '$.idType'), '"','') AS customer_id_type,
-    REPLACE(JSON_EXTRACT(o.customer, '$.identification'), '"','') AS customer_identification,
+    REPLACE(JSON_QUERY(o.customer, '$.fullName'), '"','') AS customer_full_name,
+    REPLACE(JSON_QUERY(o.customer, '$.idType'), '"','') AS customer_id_type,
+    REPLACE(JSON_QUERY(o.customer, '$.identification'), '"','') AS customer_identification,
     REPLACE(JSON_QUERY(o.shipping_address, '$.city.name'), '"','') AS shipping_city,
     o.order_number,
     o.created_at_col,
@@ -51,8 +51,8 @@ select
     p.active AS product_active,
     p.price_before_tax AS product_price_before_tax,
     p.price_after_tax AS product_price_after_tax,
-    REPLACE(JSON_EXTRACT(o.status, '$.description'), '"','') AS status_description,
-    REPLACE(JSON_EXTRACT(o.channel, '$.description'), '"','') AS channel_description,
+    REPLACE(JSON_QUERY(o.status, '$.description'), '"','') AS status_description,
+    REPLACE(JSON_QUERY(o.channel, '$.description'), '"','') AS channel_description,
     o.promised_delivery_date_time_col,
     o.order_number_shopify,
     oi.updated_at_col
