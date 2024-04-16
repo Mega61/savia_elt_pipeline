@@ -9,7 +9,8 @@ with orders as (
     SELECT 
         *,
         TIMESTAMP_SUB(created_at, INTERVAL 5 HOUR) AS created_at_col,
-        TIMESTAMP_SUB(promised_delivery_date_time, INTERVAL 5 HOUR) AS promised_delivery_date_time_col
+        TIMESTAMP_SUB(promised_delivery_date_time, INTERVAL 5 HOUR) AS promised_delivery_date_time_col,
+        TIMESTAMP_SUB(updated_at, INTERVAL 5 HOUR) AS updated_at_col_order
     FROM {{source('mongo_savia_core_qa', 'order')}}
 ),
 
@@ -55,7 +56,8 @@ select
     REPLACE(JSON_QUERY(o.channel, '$.description'), '"','') AS channel_description,
     o.promised_delivery_date_time_col,
     o.order_number_shopify,
-    oi.updated_at_col
+    oi.updated_at_col,
+    o.updated_at_col_order
 from orders o
 inner join
 order_items oi ON o._id = oi.order_id
@@ -65,4 +67,5 @@ where
 o.company_id = "629ec6e7541abf7b407b0ade"
 {% if is_incremental() %}
     AND oi.updated_at_col > (select max(updated_at_col) from {{ this }})
+    OR o.updated_at_col_order > (select max(updated_at_col_order) from {{ this }})
 {% endif %}
