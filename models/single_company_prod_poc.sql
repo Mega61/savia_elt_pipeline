@@ -23,7 +23,6 @@ order_items as (
         (price_before_tax * quantity) * (discount/100) as net_discount,
         TIMESTAMP_SUB(updated_at, INTERVAL 5 HOUR) AS updated_at_col
     from {{source('mongo_savia_core_qa', 'order_item')}}
-    where active = true
 ),
 
 products as (
@@ -49,6 +48,7 @@ select
     oi.tax AS order_item_tax,
     oi.discount as order_item_discount,
     oi.net_value,
+    oi.net_value / sum(oi.net_value) OVER (PARTITION BY EXTRACT(YEAR FROM o.created_at_col), EXTRACT(MONTH FROM o.created_at_col)) * 100 AS net_value_percetange,
     oi.net_discount,
     o.invoicing_status,
     o.invoiced_date_time_col,
@@ -62,7 +62,8 @@ select
     o.actual_delivery_date_time_col,
     o.order_number_shopify,
     oi.updated_at_col,
-    o.updated_at_col_order
+    o.updated_at_col_order,
+    oi.active
 from orders o
 inner join
 order_items oi ON o._id = oi.order_id
