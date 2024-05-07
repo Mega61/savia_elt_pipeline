@@ -36,6 +36,7 @@ select
     REPLACE(JSON_QUERY(o.customer, '$.idType'), '"','') AS customer_id_type,
     REPLACE(JSON_QUERY(o.customer, '$.identification'), '"','') AS customer_identification,
     REPLACE(JSON_QUERY(o.shipping_address, '$.city.name'), '"','') AS shipping_city,
+    REPLACE(JSON_QUERY(o.shipping_address, '$.state.name'), '"','') AS shipping_state,
     o.order_number,
     o.created_at_col,
     o.total_before_tax AS order_total_before_tax,
