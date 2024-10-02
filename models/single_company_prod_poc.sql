@@ -62,6 +62,8 @@ select
     o.promised_delivery_date_time_col,
     o.actual_delivery_date_time_col,
     o.order_number_shopify,
+    o.is_paid,
+    o.invoice_id,
     oi.updated_at_col,
     o.updated_at_col_order,
     oi.active
