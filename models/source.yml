@@ -6,3 +6,6 @@ sources:
       - name: order
       - name: order_item
       - name: product
+      - name: user
+      - name: order_tracking
+      - name: status

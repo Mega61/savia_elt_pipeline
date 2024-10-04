@@ -28,6 +28,14 @@ order_items as (
 products as (
     select *
     from {{source('mongo_savia_core_qa', 'product')}}
+),
+
+vendors as (
+    select u._id, u.full_name, u.primary_email, u.last_login, ot.order_id
+    from {{source('mongo_savia_core_qa', 'user')}} u
+    join {{source('mongo_savia_core_qa', 'order_tracking')}} ot on u._id = ot.user_id
+    join {{source('mongo_savia_core_qa', 'status')}} s on s._id = ot.status_id
+    where s.role = "START"
 )
 
 select
@@ -66,12 +74,18 @@ select
     o.invoice_id,
     oi.updated_at_col,
     o.updated_at_col_order,
-    oi.active
+    oi.active,
+    v._id AS vendor_id,
+    v.full_name AS vendor_full_name,
+    v.primary_email AS vendor_primary_email,
+    v.last_login AS vendor_last_login
 from orders o
 inner join
 order_items oi ON o._id = oi.order_id
 inner join
 products p ON oi.product_id = p._id
+left join
+vendors v ON v.order_id = o._id
 where
 o.company_id = "629ec6e7541abf7b407b0ade"
 {% if is_incremental() %}
